@@ -17,17 +17,20 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" />
 
-        {/* The list stays mounted (only hidden) to keep loaded Pokémon and scroll position */}
-        <View style={[styles.screen, isDetailOpen && styles.hidden]}>
+                 <View style={styles.screen}>
+          {/* The list always stays mounted to keep loaded Pokémon and scroll position */}
           <ListScreen onSelectPokemon={setSelectedPokemonId} />
-        </View>
 
-        {isDetailOpen && (
-          <DetailScreen
-            pokemonId={selectedPokemonId}
-            onBack={() => setSelectedPokemonId(null)}
-          />
-        )}
+          {/* The detail is drawn on top of the list, covering it completely */}
+          {isDetailOpen && (
+            <View style={styles.overlay}>
+              <DetailScreen
+                pokemonId={selectedPokemonId}
+                onBack={() => setSelectedPokemonId(null)}
+              />
+            </View>
+          )}
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -36,5 +39,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   screen: { flex: 1 },
-  hidden: { display: 'none' },
+    overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: colors.background,
+  },
 });
+//Bugs encontrados

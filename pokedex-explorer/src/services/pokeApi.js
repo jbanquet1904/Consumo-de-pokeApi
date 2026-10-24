@@ -2,9 +2,20 @@ import { getIdFromUrl, getArtworkUrl } from '../utils/formatters';
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
+
+// Wraps fetch: without internet, fetch throws an English error,
+// so we replace it with a clear Spanish message for the user
+async function request(url) {
+  try {
+    return await fetch(url);
+  } catch {
+    throw new Error('No hay conexión a internet. Revisa tu conexión e intenta de nuevo.');
+  }
+}
+
 // Concept: fetch with async/await to consume a REST API
 export async function getPokemonList(limit = 20, offset = 0) {
-  const response = await fetch(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
+  const response = await request(`${BASE_URL}/pokemon?limit=${limit}&offset=${offset}`);
 
   // Concept: check response.ok before calling response.json()
   if (!response.ok) {
@@ -31,7 +42,7 @@ export async function getPokemonDetail(nameOrId) {
     query = String(Number(query));
   }
 
-  const response = await fetch(`${BASE_URL}/pokemon/${query}`);
+   const response = await request(`${BASE_URL}/pokemon/${encodeURIComponent(query)}`);
 
   // Concept: a 404 returns plain text, not JSON, so we handle it first
   if (response.status === 404) {
@@ -51,6 +62,9 @@ export async function getPokemonDetail(nameOrId) {
     weight: data.weight / 10, // hectograms -> kilograms
     types: data.types.map((t) => t.type.name),
     stats: data.stats.map((s) => ({ name: s.stat.name, value: s.base_stat })),
-    image: data.sprites.other['official-artwork'].front_default,
+      image:
+      data.sprites?.other?.['official-artwork']?.front_default ??
+      data.sprites?.front_default ??
+      null,
   };
 }
