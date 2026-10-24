@@ -17,7 +17,7 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" />
 
-                 <View style={styles.screen}>
+        <View style={styles.screen}>
           {/* The list always stays mounted to keep loaded Pokémon and scroll position */}
           <ListScreen onSelectPokemon={setSelectedPokemonId} />
 
@@ -39,7 +39,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   screen: { flex: 1 },
-    overlay: {
+  overlay: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -48,4 +48,3 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 });
-//Bugs encontrados
