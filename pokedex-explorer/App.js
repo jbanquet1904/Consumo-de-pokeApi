@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ListScreen from './src/screens/ListScreen';
 import DetailScreen from './src/screens/DetailScreen';
@@ -16,7 +15,7 @@ export default function App() {
     // Concept: SafeAreaView keeps content away from the notch and status bar
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <StatusBar style="dark" />
+        <StatusBar barStyle="dark-content" />
 
         {/* The list stays mounted (only hidden) to keep loaded Pokémon and scroll position */}
         <View style={[styles.screen, isDetailOpen && styles.hidden]}>
